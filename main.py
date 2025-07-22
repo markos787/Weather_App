@@ -9,6 +9,41 @@ from datetime import *
 from PIL import Image, ImageTk
 
 
+def get_weather():
+
+    # Time and timezone
+    city=txtfld.get()
+    locator=Nominatim(user_agent='geoapiExcercises') # calling an object
+    location=locator.geocode(city) # converting city name to coordinates
+    obj=TimezoneFinder()
+    result=obj.timezone_at(lng=location.longitude, lat=location.latitude)
+    timezone_clock.config(text=result)
+    if location.latitude>=0:
+        ns='N'
+        lat=round(location.latitude, 4)
+    else:
+        ns='S'
+        lat=(-1)*round(location.latitude, 4)
+    if location.longitude>=0:
+        ew='E'
+        lon=round(location.longitude, 4)
+    else:
+        ew='W'
+        lon=(-1)*round(location.longitude, 4)
+    lon_lat.config(text=f'{lat}°{ns}, {lon}°{ew}')
+    home=pytz.timezone(result)
+    local_time=datetime.now(home)
+    current_time=local_time.strftime('%H:%M') # H - time in 24h system
+    clock.config(text=current_time)
+
+    # Weather (from OpenWeather API, creating API key is paid)
+    api='https://api.openweathermap.org/data/2.5/onecall?lat='+str(location.latitude)+'&lon='+str(location.longitude)+'&units=metric&exclude=hourly&appid={API key}'
+    json_data=requests.get(api).json()
+
+    # Current
+    temp=json_data['current']['temp']
+
+
 root=Tk()
 root.title("Weather Forecast")
 root.geometry('890x470+300+300') # 300 - distance from left and bottom of the screen
@@ -51,7 +86,7 @@ txtfld.place(x=370, y=130)
 txtfld.focus()
 
 search_icon=PhotoImage(file='C:\\Users\\Lenovo\\Pictures\\Nauka\\Programowanie\\Weather_App\\images\\Layer 6.png')
-icon_button=Button(image=search_icon, borderwidth=0, cursor='hand2', bg='#203243')
+icon_button=Button(image=search_icon, borderwidth=0, cursor='hand2', bg='#203243', command=get_weather)
 icon_button.place(x=645, y=125)
 
 # Lower box
@@ -68,5 +103,15 @@ Label(frame, image=box2, bg='black').place(x=500, y=30)
 Label(frame, image=box2, bg='black').place(x=600, y=30)
 Label(frame, image=box2, bg='black').place(x=700, y=30)
 Label(frame, image=box2, bg='black').place(x=800, y=30)
+
+# Clock
+clock=Label(root, font=('Helvetica', 28, 'bold'), fg='white', bg='dodgerblue')
+clock.place(x=30, y=20)
+
+timezone_clock=Label(root, font=('Helvetica', 18, 'bold'), fg='white', bg='dodgerblue')
+timezone_clock.place(x=600, y=20)
+
+lon_lat=Label(root, font=('Helvetica', 10), fg='white', bg='dodgerblue')
+lon_lat.place(x=600, y=50)
 
 root.mainloop()
