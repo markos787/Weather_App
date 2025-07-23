@@ -42,7 +42,16 @@ def get_weather():
 
     # Current
     temp=json_data['current']['temp']
+    humidity=json_data['current']['humidity']
+    pressure=json_data['current']['pressure']
+    wind=json_data['current']['wind_speed']
+    descr=json_data['current']['weather'][0]['description']
 
+    temp_res.config(text=(temp, '°C'))
+    hum_res.config(text=(humidity, '%'))
+    press_res.config(text=(pressure, 'hPa'))
+    wind_res.config(text=(wind, 'm/s'))
+    desc_res.config(text=descr)
 
 root=Tk()
 root.title("Weather Forecast")
@@ -113,5 +122,48 @@ timezone_clock.place(x=600, y=20)
 
 lon_lat=Label(root, font=('Helvetica', 10), fg='white', bg='dodgerblue')
 lon_lat.place(x=600, y=50)
+
+# Forecast results
+temp_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
+hum_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
+press_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
+wind_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
+desc_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
+
+temp_res.place(x=150, y=120)
+hum_res.place(x=150, y=140)
+press_res.place(x=150, y=160)
+wind_res.place(x=150, y=180)
+desc_res.place(x=150, y=200)
+
+### Boxes
+
+# First
+frame1=Frame(root, width=230, height=132, bg='black')
+frame1.place(x=35, y=315)
+
+# Second
+frame2=Frame(root, width=70, height=115, bg='black')
+frame2.place(x=305, y=325)
+
+# Third
+frame3=Frame(root, width=230, height=132, bg='black')
+frame3.place(x=405, y=325)
+
+# Fourth
+frame4=Frame(root, width=230, height=132, bg='black')
+frame4.place(x=505, y=325)
+
+# Fifth
+frame5=Frame(root, width=230, height=132, bg='black')
+frame5.place(x=605, y=325)
+
+# Sixth
+frame6=Frame(root, width=230, height=132, bg='black')
+frame6.place(x=705, y=325)
+
+# Seventh
+frame7=Frame(root, width=230, height=132, bg='black')
+frame7.place(x=805, y=325)
 
 root.mainloop()
