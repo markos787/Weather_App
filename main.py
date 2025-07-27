@@ -53,6 +53,77 @@ def get_weather():
     wind_res.config(text=(wind, 'm/s'))
     desc_res.config(text=descr)
 
+    # Boxes
+    day1_img=json_data['daily'][0]['weather'][0]['icon'] # returns icon image depending on weather form OpenWeather
+    weather_img1=ImageTk.PhotoImage(file=f'icon\\{day1_img}@2x.png')
+    image1.config(image=weather_img1)
+    image1.image=weather_img1
+
+    day2_img=json_data['daily'][1]['weather'][0]['icon']
+    img2=Image.open(f'icon\\{day2_img}@2x.png')
+    resized_img2=img2.resize((50,50))
+    weather_img2=ImageTk.PhotoImage(resized_img2)
+    image2.config(image=weather_img2)
+    image2.image=weather_img2
+
+    day3_img=json_data['daily'][2]['weather'][0]['icon']
+    img3=Image.open(f'icon\\{day3_img}@2x.png')
+    resized_img3=img3.resize((50,50))
+    weather_img3=ImageTk.PhotoImage(resized_img3)
+    image3.config(image=weather_img3)
+    image3.image=weather_img3
+
+    day4_img=json_data['daily'][3]['weather'][0]['icon']
+    img4=Image.open(f'icon\\{day4_img}@2x.png')
+    resized_img4=img4.resize((50,50))
+    weather_img4=ImageTk.PhotoImage(resized_img4)
+    image4.config(image=weather_img4)
+    image4.image=weather_img4
+
+    day5_img=json_data['daily'][4]['weather'][0]['icon']
+    img5=Image.open(f'icon\\{day5_img}@2x.png')
+    resized_img5=img5.resize((50,50))
+    weather_img5=ImageTk.PhotoImage(resized_img5)
+    image5.config(image=weather_img5)
+    image5.image=weather_img5
+
+    day6_img=json_data['daily'][5]['weather'][0]['icon']
+    img6=Image.open(f'icon\\{day6_img}@2x.png')
+    resized_img6=img6.resize((50,50))
+    weather_img6=ImageTk.PhotoImage(resized_img6)
+    image6.config(image=weather_img6)
+    image6.image=weather_img6
+
+    day7_img=json_data['daily'][6]['weather'][0]['icon']
+    img7=Image.open(f'icon\\{day7_img}@2x.png')
+    resized_img7=img7.resize((50,50))
+    weather_img7=ImageTk.PhotoImage(resized_img7)
+    image7.config(image=weather_img7)
+    image7.image=weather_img7
+
+    # Days
+    first=datetime.now()
+    day1.config(text=first.strftime('%A')) # %A - day of the week
+
+    second=first+timedelta(days=1)
+    day2.config(text=second.strftime('%A'))
+
+    third=first+timedelta(days=2)
+    day3.config(text=third.strftime('%A'))
+
+    fourth=first+timedelta(days=3)
+    day4.config(text=fourth.strftime('%A'))
+
+    fifth=first+timedelta(days=4)
+    day5.config(text=fifth.strftime('%A'))
+
+    sixth=first+timedelta(days=5)
+    day6.config(text=sixth.strftime('%A'))
+
+    seventh=first+timedelta(days=6)
+    day7.config(text=seventh.strftime('%A'))
+
+
 root=Tk()
 root.title("Weather Forecast")
 root.geometry('890x470+300+300') # 300 - distance from left and bottom of the screen
@@ -142,28 +213,70 @@ desc_res.place(x=150, y=200)
 frame1=Frame(root, width=230, height=132, bg='black')
 frame1.place(x=35, y=315)
 
+day1=Label(frame1, font='arial 20', bg='black', fg='white')
+day1.place(x=80, y=5)
+
+image1=Label(frame1, bg='black')
+image1.place(x=1, y=15)
+
 # Second
 frame2=Frame(root, width=70, height=115, bg='black')
 frame2.place(x=305, y=325)
+
+day2=Label(frame2, bg='black', fg='white')
+day2.place(x=10, y=5)
+
+image2=Label(frame2, bg='black')
+image2.place(x=7, y=20)
 
 # Third
 frame3=Frame(root, width=230, height=132, bg='black')
 frame3.place(x=405, y=325)
 
+day3=Label(frame3, bg='black', fg='white')
+day3.place(x=10, y=5)
+
+image3=Label(frame3, bg='black')
+image3.place(x=7, y=20)
+
 # Fourth
 frame4=Frame(root, width=230, height=132, bg='black')
 frame4.place(x=505, y=325)
+
+day4=Label(frame4, bg='black', fg='white')
+day4.place(x=10, y=5)
+
+image4=Label(frame4, bg='black')
+image4.place(x=7, y=20)
 
 # Fifth
 frame5=Frame(root, width=230, height=132, bg='black')
 frame5.place(x=605, y=325)
 
+day5=Label(frame5, bg='black', fg='white')
+day5.place(x=10, y=5)
+
+image5=Label(frame5, bg='black')
+image5.place(x=7, y=20)
+
 # Sixth
 frame6=Frame(root, width=230, height=132, bg='black')
 frame6.place(x=705, y=325)
 
+day6=Label(frame6, bg='black', fg='white')
+day6.place(x=10, y=5)
+
+image6=Label(frame6, bg='black')
+image6.place(x=7, y=20)
+
 # Seventh
 frame7=Frame(root, width=230, height=132, bg='black')
 frame7.place(x=805, y=325)
+
+day7=Label(frame7, bg='black', fg='white')
+day7.place(x=10, y=5)
+
+image7=Label(frame7, bg='black')
+image7.place(x=7, y=20)
 
 root.mainloop()
