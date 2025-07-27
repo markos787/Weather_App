@@ -179,6 +179,7 @@ weat_img=PhotoImage(file='C:\\Users\\Lenovo\\Pictures\\Nauka\\Programowanie\\Wea
 Label(root, image=weat_img, bg='#203243').place(x=290, y=127)
 
 txtfld=tk.Entry(root, justify='center', width=15, font=('poppins', 25, 'bold'), bg='#203243', border=0, fg='white')
+txtfld.bind('<Return>', lambda event: get_weather())
 txtfld.place(x=370, y=130)
 txtfld.focus()
 
