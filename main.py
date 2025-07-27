@@ -60,7 +60,7 @@ def get_weather():
     icon=[]
     temp_days=[]
     temp_nights=[]
-    temps_by_day = defaultdict(list) #
+    temps_by_day = defaultdict(list) # creates inserts if they are called but don't exist
     for entry in json_data_for["list"]:
         date = entry["dt_txt"].split(" ")[0]
         temp = entry["main"]["temp"]
@@ -69,8 +69,8 @@ def get_weather():
             icon_get=entry['weather'][0]['icon']
             icon.append(icon_get)
     for date, temps in temps_by_day.items():
-        temp_max = round(max(temps), 0)
-        temp_min = round(min(temps), 0)
+        temp_max = int(max(temps))
+        temp_min = int(min(temps))
         temp_days.append(temp_max)
         temp_nights.append(temp_min)
 
@@ -81,7 +81,7 @@ def get_weather():
     image1.image=weather_img1
     temp_day1=temp_days[0]
     temp_night1=temp_nights[0]
-    day1_temp.config(text=f'Day:{temp_day1}°C\n Night:{temp_night1}°C')
+    day1_temp.config(text=f'Day: {temp_day1}°C\n Night: {temp_night1}°C')
 
     day2_img=icon[1]
     img2=Image.open(f'icon\\{day2_img}@2x.png')
@@ -91,7 +91,7 @@ def get_weather():
     image2.image=weather_img2
     temp_day2=temp_days[1]
     temp_night2=temp_nights[1]
-    day2_temp.config(text=f'Day:{temp_day2}°C\n Night:{temp_night2}°C')
+    day2_temp.config(text=f'Day: {temp_day2}°C\n Night: {temp_night2}°C')
 
     day3_img=icon[2]
     img3=Image.open(f'icon\\{day3_img}@2x.png')
@@ -101,7 +101,7 @@ def get_weather():
     image3.image=weather_img3
     temp_day3=temp_days[2]
     temp_night3=temp_nights[2]
-    day3_temp.config(text=f'Day:{temp_day3}°C\n Night:{temp_night3}°C')
+    day3_temp.config(text=f'Day: {temp_day3}°C\n Night: {temp_night3}°C')
 
     day4_img=icon[3]
     img4=Image.open(f'icon\\{day4_img}@2x.png')
@@ -111,7 +111,7 @@ def get_weather():
     image4.image=weather_img4
     temp_day4=temp_days[3]
     temp_night4=temp_nights[3]
-    day4_temp.config(text=f'Day:{temp_day4}°C\n Night:{temp_night4}°C')
+    day4_temp.config(text=f'Day: {temp_day4}°C\n Night: {temp_night4}°C')
 
     day5_img=icon[4]
     img5=Image.open(f'icon\\{day5_img}@2x.png')
@@ -121,7 +121,7 @@ def get_weather():
     image5.image=weather_img5
     temp_day5=temp_days[4]
     temp_night5=temp_nights[4]
-    day5_temp.config(text=f'Day:{temp_day5}°C\n Night:{temp_night5}°C')
+    day5_temp.config(text=f'Day: {temp_day5}°C\n Night: {temp_night5}°C')
 
 
     # Days
@@ -143,7 +143,7 @@ def get_weather():
 
 root=Tk()
 root.title("Weather Forecast")
-root.geometry('890x470+300+300') # 300 - distance from left and bottom of the screen
+root.geometry('860x470+300+300') # 300 - distance from left and bottom of the screen
 root.configure(bg='dodgerblue')
 root.resizable(False, False)
 
@@ -157,19 +157,19 @@ Label(root, image=rounded, bg='black').place(x=30, y=110) # place - different wa
 
 # Labelling
 label1=Label(root, text='Temperature', font=('Arial', 11), fg='white', bg='#203243')
-label1.place(x=80, y=120)
+label1.place(x=40, y=120)
 
 label2=Label(root, text='Humidity', font=('Arial', 11), fg='white', bg='#203243')
-label2.place(x=80, y=140)
+label2.place(x=40, y=140)
 
 label3=Label(root, text='Pressure', font=('Arial', 11), fg='white', bg='#203243')
-label3.place(x=80, y=160)
+label3.place(x=40, y=160)
 
 label4=Label(root, text='Wind', font=('Arial', 11), fg='white', bg='#203243')
-label4.place(x=80, y=180)
+label4.place(x=40, y=180)
 
 label5=Label(root, text='Description', font=('Arial', 11), fg='white', bg='#203243')
-label5.place(x=80, y=200)
+label5.place(x=40, y=200)
 
 # Searching box
 search_img=PhotoImage(file='C:\\Users\\Lenovo\\Pictures\\Nauka\\Programowanie\\Weather_App\\images\\Rounded Rectangle 3.png')
@@ -193,11 +193,11 @@ frame.pack(side=BOTTOM) # another way of placing - docking a frame at the bottom
 box1=PhotoImage(file='C:\\Users\\Lenovo\\Pictures\\Nauka\\Programowanie\\Weather_App\\images\\Rounded Rectangle 2.png')
 box2=PhotoImage(file='C:\\Users\\Lenovo\\Pictures\\Nauka\\Programowanie\\Weather_App\\images\\Rounded Rectangle 2 copy.png')
 
-Label(frame, image=box1, bg='black').place(x=30, y=20) # relative placing (to frame, not root)
-Label(frame, image=box2, bg='black').place(x=300, y=30)
-Label(frame, image=box2, bg='black').place(x=400, y=30)
-Label(frame, image=box2, bg='black').place(x=500, y=30)
-Label(frame, image=box2, bg='black').place(x=600, y=30)
+Label(frame, image=box1, bg='black').place(x=80, y=20) # relative placing (to frame, not root)
+Label(frame, image=box2, bg='black').place(x=360, y=30)
+Label(frame, image=box2, bg='black').place(x=470, y=30)
+Label(frame, image=box2, bg='black').place(x=580, y=30)
+Label(frame, image=box2, bg='black').place(x=690, y=30)
 
 # Clock
 clock=Label(root, font=('Helvetica', 28, 'bold'), fg='white', bg='dodgerblue')
@@ -216,77 +216,77 @@ press_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
 wind_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
 desc_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
 
-temp_res.place(x=150, y=120)
-hum_res.place(x=150, y=140)
-press_res.place(x=150, y=160)
-wind_res.place(x=150, y=180)
-desc_res.place(x=150, y=200)
+temp_res.place(x=130, y=120)
+hum_res.place(x=130, y=140)
+press_res.place(x=130, y=160)
+wind_res.place(x=130, y=180)
+desc_res.place(x=130, y=200)
 
 ### Boxes
 
 # First
-frame1=Frame(root, width=230, height=132, bg='black')
-frame1.place(x=35, y=315)
+frame1=Frame(root, width=230, height=132, bg='#203243')
+frame1.place(x=85, y=315)
 
-day1=Label(frame1, font='arial 20', bg='black', fg='white')
-day1.place(x=80, y=5)
+day1=Label(frame1, font='arial 20', bg='#203243', fg='white')
+day1.place(x=100, y=3)
 
-image1=Label(frame1, bg='black')
+image1=Label(frame1, bg='#203243')
 image1.place(x=1, y=15)
 
-day1_temp=Label(frame1, font='arial 15 bold', bg='black', fg='dodgerblue') # another way to define font
+day1_temp=Label(frame1, font='arial 15 bold', bg='#203243', fg='dodgerblue') # another way to define font
 day1_temp.place(x=80, y=50)
 
 # Second
-frame2=Frame(root, width=70, height=115, bg='black')
-frame2.place(x=305, y=325)
+frame2=Frame(root, width=70, height=115, bg='#203243')
+frame2.place(x=365, y=325)
 
-day2=Label(frame2, bg='black', fg='white')
-day2.place(x=10, y=5)
+day2=Label(frame2, bg='#203243', fg='white')
+day2.place(x=10, y=3)
 
-image2=Label(frame2, bg='black')
+image2=Label(frame2, bg='#203243')
 image2.place(x=7, y=20)
 
-day2_temp=Label(frame2, bg='black', fg='white')
+day2_temp=Label(frame2, bg='#203243', fg='white')
 day2_temp.place(x=2, y=70)
 
 # Third
-frame3=Frame(root, width=230, height=132, bg='black')
-frame3.place(x=405, y=325)
+frame3=Frame(root, width=70, height=115, bg='#203243')
+frame3.place(x=475, y=325)
 
-day3=Label(frame3, bg='black', fg='white')
-day3.place(x=10, y=5)
+day3=Label(frame3, bg='#203243', fg='white')
+day3.place(x=10, y=3)
 
-image3=Label(frame3, bg='black')
+image3=Label(frame3, bg='#203243')
 image3.place(x=7, y=20)
 
-day3_temp=Label(frame3, bg='black', fg='white')
+day3_temp=Label(frame3, bg='#203243', fg='white')
 day3_temp.place(x=2, y=70)
 
 # Fourth
-frame4=Frame(root, width=230, height=132, bg='black')
-frame4.place(x=505, y=325)
+frame4=Frame(root, width=70, height=115, bg='#203243')
+frame4.place(x=585, y=325)
 
-day4=Label(frame4, bg='black', fg='white')
-day4.place(x=10, y=5)
+day4=Label(frame4, bg='#203243', fg='white')
+day4.place(x=10, y=3)
 
-image4=Label(frame4, bg='black')
+image4=Label(frame4, bg='#203243')
 image4.place(x=7, y=20)
 
-day4_temp=Label(frame4, bg='black', fg='white')
+day4_temp=Label(frame4, bg='#203243', fg='white')
 day4_temp.place(x=2, y=70)
 
 # Fifth
-frame5=Frame(root, width=230, height=132, bg='black')
-frame5.place(x=605, y=325)
+frame5=Frame(root, width=70, height=115, bg='#203243')
+frame5.place(x=695, y=325)
 
-day5=Label(frame5, bg='black', fg='white')
-day5.place(x=10, y=5)
+day5=Label(frame5, bg='#203243', fg='white')
+day5.place(x=10, y=3)
 
-image5=Label(frame5, bg='black')
+image5=Label(frame5, bg='#203243')
 image5.place(x=7, y=20)
 
-day5_temp=Label(frame5, bg='black', fg='white')
+day5_temp=Label(frame5, bg='#203243', fg='white')
 day5_temp.place(x=2, y=70)
 
 
