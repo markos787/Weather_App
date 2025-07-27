@@ -7,6 +7,7 @@ from tkinter import ttk, messagebox
 from timezonefinder import TimezoneFinder
 from datetime import *
 from PIL import Image, ImageTk
+from collections import defaultdict
 
 
 def get_weather():
@@ -36,16 +37,18 @@ def get_weather():
     current_time=local_time.strftime('%H:%M') # H - time in 24h system
     clock.config(text=current_time)
 
-    # Weather (from OpenWeather API, creating API key is paid)
-    api='https://api.openweathermap.org/data/2.5/onecall?lat='+str(location.latitude)+'&lon='+str(location.longitude)+'&units=metric&exclude=hourly&appid={API key}'
+    # Weather (from OpenWeather API)
+    api='https://api.openweathermap.org/data/2.5/weather?lat='+str(location.latitude)+'&lon='+str(location.longitude)+'&units=metric&exclude=hourly&appid=55736dc3bb17f6eba72742b8fe779d5d'
     json_data=requests.get(api).json()
+    api_forecast='https://api.openweathermap.org/data/2.5/forecast?lat='+str(location.latitude)+'&lon='+str(location.longitude)+'&units=metric&appid=55736dc3bb17f6eba72742b8fe779d5d'
+    json_data_for=requests.get(api_forecast).json()
 
     # Current
-    temp=json_data['current']['temp']
-    humidity=json_data['current']['humidity']
-    pressure=json_data['current']['pressure']
-    wind=json_data['current']['wind_speed']
-    descr=json_data['current']['weather'][0]['description']
+    temp=json_data['main']['temp']
+    humidity=json_data['main']['humidity']
+    pressure=json_data['main']['pressure']
+    wind=json_data['wind']['speed']
+    descr=json_data['weather'][0]['description']
 
     temp_res.config(text=(temp, '°C'))
     hum_res.config(text=(humidity, '%'))
@@ -53,53 +56,73 @@ def get_weather():
     wind_res.config(text=(wind, 'm/s'))
     desc_res.config(text=descr)
 
+    # Forecast
+    icon=[]
+    temp_days=[]
+    temp_nights=[]
+    temps_by_day = defaultdict(list) #
+    for entry in json_data_for["list"]:
+        date = entry["dt_txt"].split(" ")[0]
+        temp = entry["main"]["temp"]
+        temps_by_day[date].append(temp)
+        if '12:00:00' in entry['dt_txt']:
+            icon_get=entry['weather'][0]['icon']
+            icon.append(icon_get)
+    for date, temps in temps_by_day.items():
+        temp_max = round(max(temps), 0)
+        temp_min = round(min(temps), 0)
+        temp_days.append(temp_max)
+        temp_nights.append(temp_min)
+
     # Boxes
-    day1_img=json_data['daily'][0]['weather'][0]['icon'] # returns icon image depending on weather form OpenWeather
+    day1_img=icon[0] # returns icon image depending on weather form OpenWeather
     weather_img1=ImageTk.PhotoImage(file=f'icon\\{day1_img}@2x.png')
     image1.config(image=weather_img1)
     image1.image=weather_img1
+    temp_day1=temp_days[0]
+    temp_night1=temp_nights[0]
+    day1_temp.config(text=f'Day:{temp_day1}°C\n Night:{temp_night1}°C')
 
-    day2_img=json_data['daily'][1]['weather'][0]['icon']
+    day2_img=icon[1]
     img2=Image.open(f'icon\\{day2_img}@2x.png')
     resized_img2=img2.resize((50,50))
     weather_img2=ImageTk.PhotoImage(resized_img2)
     image2.config(image=weather_img2)
     image2.image=weather_img2
+    temp_day2=temp_days[1]
+    temp_night2=temp_nights[1]
+    day2_temp.config(text=f'Day:{temp_day2}°C\n Night:{temp_night2}°C')
 
-    day3_img=json_data['daily'][2]['weather'][0]['icon']
+    day3_img=icon[2]
     img3=Image.open(f'icon\\{day3_img}@2x.png')
     resized_img3=img3.resize((50,50))
     weather_img3=ImageTk.PhotoImage(resized_img3)
     image3.config(image=weather_img3)
     image3.image=weather_img3
+    temp_day3=temp_days[2]
+    temp_night3=temp_nights[2]
+    day3_temp.config(text=f'Day:{temp_day3}°C\n Night:{temp_night3}°C')
 
-    day4_img=json_data['daily'][3]['weather'][0]['icon']
+    day4_img=icon[3]
     img4=Image.open(f'icon\\{day4_img}@2x.png')
     resized_img4=img4.resize((50,50))
     weather_img4=ImageTk.PhotoImage(resized_img4)
     image4.config(image=weather_img4)
     image4.image=weather_img4
+    temp_day4=temp_days[3]
+    temp_night4=temp_nights[3]
+    day4_temp.config(text=f'Day:{temp_day4}°C\n Night:{temp_night4}°C')
 
-    day5_img=json_data['daily'][4]['weather'][0]['icon']
+    day5_img=icon[4]
     img5=Image.open(f'icon\\{day5_img}@2x.png')
     resized_img5=img5.resize((50,50))
     weather_img5=ImageTk.PhotoImage(resized_img5)
     image5.config(image=weather_img5)
     image5.image=weather_img5
+    temp_day5=temp_days[4]
+    temp_night5=temp_nights[4]
+    day5_temp.config(text=f'Day:{temp_day5}°C\n Night:{temp_night5}°C')
 
-    day6_img=json_data['daily'][5]['weather'][0]['icon']
-    img6=Image.open(f'icon\\{day6_img}@2x.png')
-    resized_img6=img6.resize((50,50))
-    weather_img6=ImageTk.PhotoImage(resized_img6)
-    image6.config(image=weather_img6)
-    image6.image=weather_img6
-
-    day7_img=json_data['daily'][6]['weather'][0]['icon']
-    img7=Image.open(f'icon\\{day7_img}@2x.png')
-    resized_img7=img7.resize((50,50))
-    weather_img7=ImageTk.PhotoImage(resized_img7)
-    image7.config(image=weather_img7)
-    image7.image=weather_img7
 
     # Days
     first=datetime.now()
@@ -116,12 +139,6 @@ def get_weather():
 
     fifth=first+timedelta(days=4)
     day5.config(text=fifth.strftime('%A'))
-
-    sixth=first+timedelta(days=5)
-    day6.config(text=sixth.strftime('%A'))
-
-    seventh=first+timedelta(days=6)
-    day7.config(text=seventh.strftime('%A'))
 
 
 root=Tk()
@@ -181,8 +198,6 @@ Label(frame, image=box2, bg='black').place(x=300, y=30)
 Label(frame, image=box2, bg='black').place(x=400, y=30)
 Label(frame, image=box2, bg='black').place(x=500, y=30)
 Label(frame, image=box2, bg='black').place(x=600, y=30)
-Label(frame, image=box2, bg='black').place(x=700, y=30)
-Label(frame, image=box2, bg='black').place(x=800, y=30)
 
 # Clock
 clock=Label(root, font=('Helvetica', 28, 'bold'), fg='white', bg='dodgerblue')
@@ -195,11 +210,11 @@ lon_lat=Label(root, font=('Helvetica', 10), fg='white', bg='dodgerblue')
 lon_lat.place(x=600, y=50)
 
 # Forecast results
-temp_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
-hum_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
-press_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
-wind_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
-desc_res=Label(root, text='temp', font=('Helvetica', 11), fg='white', bg='#203243')
+temp_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
+hum_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
+press_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
+wind_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
+desc_res=Label(root, font=('Helvetica', 11), fg='white', bg='#203243')
 
 temp_res.place(x=150, y=120)
 hum_res.place(x=150, y=140)
@@ -219,6 +234,9 @@ day1.place(x=80, y=5)
 image1=Label(frame1, bg='black')
 image1.place(x=1, y=15)
 
+day1_temp=Label(frame1, font='arial 15 bold', bg='black', fg='dodgerblue') # another way to define font
+day1_temp.place(x=80, y=50)
+
 # Second
 frame2=Frame(root, width=70, height=115, bg='black')
 frame2.place(x=305, y=325)
@@ -228,6 +246,9 @@ day2.place(x=10, y=5)
 
 image2=Label(frame2, bg='black')
 image2.place(x=7, y=20)
+
+day2_temp=Label(frame2, bg='black', fg='white')
+day2_temp.place(x=2, y=70)
 
 # Third
 frame3=Frame(root, width=230, height=132, bg='black')
@@ -239,6 +260,9 @@ day3.place(x=10, y=5)
 image3=Label(frame3, bg='black')
 image3.place(x=7, y=20)
 
+day3_temp=Label(frame3, bg='black', fg='white')
+day3_temp.place(x=2, y=70)
+
 # Fourth
 frame4=Frame(root, width=230, height=132, bg='black')
 frame4.place(x=505, y=325)
@@ -248,6 +272,9 @@ day4.place(x=10, y=5)
 
 image4=Label(frame4, bg='black')
 image4.place(x=7, y=20)
+
+day4_temp=Label(frame4, bg='black', fg='white')
+day4_temp.place(x=2, y=70)
 
 # Fifth
 frame5=Frame(root, width=230, height=132, bg='black')
@@ -259,24 +286,8 @@ day5.place(x=10, y=5)
 image5=Label(frame5, bg='black')
 image5.place(x=7, y=20)
 
-# Sixth
-frame6=Frame(root, width=230, height=132, bg='black')
-frame6.place(x=705, y=325)
+day5_temp=Label(frame5, bg='black', fg='white')
+day5_temp.place(x=2, y=70)
 
-day6=Label(frame6, bg='black', fg='white')
-day6.place(x=10, y=5)
-
-image6=Label(frame6, bg='black')
-image6.place(x=7, y=20)
-
-# Seventh
-frame7=Frame(root, width=230, height=132, bg='black')
-frame7.place(x=805, y=325)
-
-day7=Label(frame7, bg='black', fg='white')
-day7.place(x=10, y=5)
-
-image7=Label(frame7, bg='black')
-image7.place(x=7, y=20)
 
 root.mainloop()
