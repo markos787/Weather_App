@@ -1,2 +1,1 @@
-# Weather_App
-App for weather forecasting
+# This application is a desktop app for weather forecasting. It bases on coordinates extracted from city name via geocoding and provides information about current and future (up to 5 days) weather conditions in given place. The whole GUI is made via tkinter library.
